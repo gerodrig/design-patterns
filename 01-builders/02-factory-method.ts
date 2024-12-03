@@ -41,7 +41,7 @@ class BeanTaco implements Taco {
 
 abstract class Restaurant {
 
-    abstract createTaco(): Taco;
+    protected abstract createTaco(): Taco;
 
     orderTaco():void {
         const taco = this.createTaco();
