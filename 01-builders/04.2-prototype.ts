@@ -17,13 +17,17 @@ class Pokemon {
   attacks: string[];
 
   constructor(name: string, type: string, level: number, attacks: string[]) {
-    throw new Error('Method not implemented.');
+    this.name = name;
+    this.type = type;
+    this.level = level;
+    this.attacks = attacks;
   }
 
   // Method to clone the Pokémon
   clone(): Pokemon {
     // The attacks should avoid being passed by reference, meaning they should not be the same array.
     // Complete: Should return a new Pokémon with the same attributes
+    return new Pokemon(this.name, this.type, this.level, [...this.attacks]);
   }
 
   displayInfo(): void {
@@ -49,3 +53,21 @@ class Pokemon {
 
 // basePokemon.displayInfo(); // "Flame Burst" should not appear here
 // clone1.displayInfo();
+
+function main() {
+  const basePokemon = new Pokemon('Pikachu', 'Electric', 50, [
+    'Thunderbolt',
+    'Surf',
+  ]);
+
+  const clonedPokemon = basePokemon.clone();
+  clonedPokemon.name = 'Raichu';
+  clonedPokemon.level = 100;
+  clonedPokemon.attacks.push('Thunder');
+
+  basePokemon.displayInfo();
+  clonedPokemon.displayInfo();
+}
+
+
+main();
