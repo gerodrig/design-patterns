@@ -1,41 +1,41 @@
 /**
- * !Patrón Visitor
+ * !Visitor Pattern
  *
- * El patrón Visitor es un patrón de diseño de comportamiento
- * que te permite separar algoritmos de los objetos sobre
- * los que operan.
+ * The Visitor pattern is a behavioral design pattern
+ * that allows you to separate algorithms from the objects
+ * on which they operate.
  *
- * * Es útil cuando necesitas añadir nuevas operaciones a
- * * clases estables sin cambiar su código.
+ * * It is useful when you need to add new operations to
+ * * stable classes without changing their code.
  *
- * https://refactoring.guru/es/design-patterns/visitor
+ * https://refactoring.guru/design-patterns/visitor
  */
 
 /**
- * !Objetivo:
- * Implementar el patrón Visitor en un sistema de gestión de vehículos
- * que permite realizar operaciones específicas sobre diferentes
- * tipos de vehículos (automóviles, motocicletas y camiones).
+ * !Objective:
+ * Implement the Visitor pattern in a vehicle management system
+ * that allows performing specific operations on different
+ * types of vehicles (cars, motorcycles, and trucks).
  *
- * Estas operaciones incluyen calcular el costo de mantenimiento
- * y verificar si los vehículos cumplen con las normas de emisión.
+ * These operations include calculating maintenance costs
+ * and checking if vehicles comply with emission standards.
  */
 
 import { COLORS } from '../helpers/colors.ts';
 
-// Interfaz Visitor
+// Visitor Interface
 interface Visitor {
   visitCar(car: Car): void;
   visitMotorcycle(motorcycle: Motorcycle): void;
   visitTruck(truck: Truck): void;
 }
 
-// Interfaz Vehicle
+// Vehicle Interface
 interface Vehicle {
   accept(visitor: Visitor): void;
 }
 
-// Clase concreta - Car
+// Concrete class - Car
 class Car implements Vehicle {
   private year: number;
   private kilometers: number;
@@ -54,12 +54,13 @@ class Car implements Vehicle {
   }
 
   accept(visitor: Visitor): void {
-    // TODO: Implementar el método accept,
-    // que llama al método del visitor correspondiente
+    //? Implement the accept method,
+    // which calls the corresponding visitor method
+    visitor.visitCar(this);
   }
 }
 
-// Clase concreta - Motorcycle
+// Concrete class - Motorcycle
 class Motorcycle implements Vehicle {
   private year: number;
   private kilometers: number;
@@ -78,12 +79,13 @@ class Motorcycle implements Vehicle {
   }
 
   accept(visitor: Visitor): void {
-    // TODO: Implementar el método accept,
-    // que llama al método del visitor correspondiente
+    //? Implement the accept method,
+    // which calls the corresponding visitor method
+    visitor.visitMotorcycle(this);
   }
 }
 
-// Clase concreta - Truck
+// Concrete class - Truck
 class Truck implements Vehicle {
   private year: number;
   private kilometers: number;
@@ -108,62 +110,69 @@ class Truck implements Vehicle {
   }
 
   accept(visitor: Visitor): void {
-    // TODO: Implementar el método accept,
-    // que llama al método del visitor correspondiente
+    //? Implement the accept method,
+    // which calls the corresponding visitor method
+    visitor.visitTruck(this);
   }
 }
 
-// Clase visitante - MaintenanceCostVisitor
+// Visitor class - MaintenanceCostVisitor
 class MaintenanceCostVisitor implements Visitor {
   visitCar(car: Car): void {
-    // TODO: Calcular el costo de mantenimiento para el automóvil
-    // cost = Kilómetros recorridos * 0.1 + (2024 - Año de fabricación) * 50
+    //? Calculate maintenance cost for the car
+    // cost = Kilometers driven * 0.1 + (2024 - Year of manufacture) * 50
+    const cost = car.getKilometers() * 0.1 + (2024 - car.getYear()) * 50;
 
     console.log(
-      `Costo de mantenimiento para el automóvil: $${cost.toFixed(2)}`
+      `Maintenance cost for the car: $${cost.toFixed(2)}`
     );
   }
 
   visitMotorcycle(motorcycle: Motorcycle): void {
-    // TODO: Calcular el costo de mantenimiento para la motocicleta
-    // cost = Kilómetros recorridos * 0.05 + (2024 - Año de fabricación) * 30
+    //? Calculate maintenance cost for the motorcycle
+    // cost = Kilometers driven * 0.05 + (2024 - Year of manufacture) * 30
+    const cost = motorcycle.getKilometers() * 0.05 + (2024 - motorcycle.getYear()) * 30;
 
     console.log(
-      `Costo de mantenimiento para la motocicleta: $${cost.toFixed(2)}`
+      `Maintenance cost for the motorcycle: $${cost.toFixed(2)}`
     );
   }
 
   visitTruck(truck: Truck): void {
-    //TODO: Calcular el costo de mantenimiento para el camión
-    // cost = Kilómetros recorridos * 0.15 + Capacidad de carga * 20 + (2024 - Año de fabricación) * 100
+    //? Calculate maintenance cost for the truck
+    // cost = Kilometers driven * 0.15 + Load capacity * 20 + (2024 - Year of manufacture) * 100
+    const cost = truck.getKilometers() * 0.15 + truck.getLoadCapacity() * 20 + (2024 - truck.getYear()) * 100;
 
-    console.log(`Costo de mantenimiento para el camión: $${cost.toFixed(2)}`);
+    console.log(`Maintenance cost for the truck: $${cost.toFixed(2)}`);
   }
 }
 
-// Clase visitante - EmissionCheckVisitor
+// Visitor class - EmissionCheckVisitor
 class EmissionCheckVisitor implements Visitor {
   visitCar(car: Car): void {
-    // TODO: Verificar si el automóvil cumple con las emisiones
-    // passes = Año de fabricación > 2000 && Kilómetros recorridos < 200_000
-    console.log(`Automóvil cumple con emisiones: ${passes ? 'Sí' : 'No'}`);
+    //? Check if the car complies with emissions
+    // passes = Year of manufacture > 2000 && Kilometers driven < 200_000
+    const passes = car.getYear() > 2000 && car.getKilometers() < 200_000;
+    console.log(`Car complies with emissions: ${passes ? 'Yes' : 'No'}`);
   }
 
   visitMotorcycle(motorcycle: Motorcycle): void {
-    // TODO: Verificar si la motocicleta cumple con las emisiones
-    // passes = Año de fabricación > 2005 && Kilómetros recorridos < 100_000
-    console.log(`Motocicleta cumple con emisiones: ${passes ? 'Sí' : 'No'}`);
+    //? Check if the motorcycle complies with emissions
+    // passes = Year of manufacture > 2005 && Kilometers driven < 100_000
+    const passes = motorcycle.getYear() > 2005 && motorcycle.getKilometers() < 100_000;
+    console.log(`Motorcycle complies with emissions: ${passes ? 'Yes' : 'No'}`);
   }
 
   visitTruck(truck: Truck): void {
-    // TODO: Verificar si el camión cumple con las emisiones
-    // passes = Año de fabricación > 2010 && Kilómetros recorridos < 300_000
-    console.log(`Camión cumple con emisiones: ${passes ? 'Sí' : 'No'}`);
+    //? Check if the truck complies with emissions
+    // passes = Year of manufacture > 2010 && Kilometers driven < 300_000
+    const passes = truck.getYear() > 2010 && truck.getKilometers() < 300_000;
+    console.log(`Truck complies with emissions: ${passes ? 'Yes' : 'No'}`);
   }
 }
 
-// ! Código Cliente
-// ! Aquí no deben de haber cambios
+// ! Client Code
+// ! No changes should be made here
 function main(): void {
   const vehicles: Vehicle[] = [
     new Car(2018, 50_000),
@@ -171,11 +180,11 @@ function main(): void {
     new Truck(2012, 250_000, 20),
   ];
 
-  console.log('%c\nCalculando costos de mantenimiento:', COLORS.green);
+  console.log('%c\nCalculating maintenance costs:', COLORS.green);
   const maintenanceVisitor = new MaintenanceCostVisitor();
   vehicles.forEach((vehicle) => vehicle.accept(maintenanceVisitor));
 
-  console.log('%c\nVerificando emisiones:', COLORS.green);
+  console.log('%c\nChecking emissions:', COLORS.green);
   const emissionVisitor = new EmissionCheckVisitor();
   vehicles.forEach((vehicle) => vehicle.accept(emissionVisitor));
 }

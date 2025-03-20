@@ -1,97 +1,109 @@
 /**
- * ! Patrón Strategy
+ * ! Strategy Pattern
  *
- * El patrón Strategy es un patrón de diseño de software que define una
- * familia de algoritmos, los encapsula y los hace intercambiables.
+ * The Strategy pattern is a software design pattern that defines a
+ * family of algorithms, encapsulates them, and makes them interchangeable.
  *
  *
- * * Es útil cuando se tiene una clase que tiene un comportamiento que puede
- * * cambiar en tiempo de ejecución y se quiere delegar la responsabilidad de
- * * la implementación a otra clase.
+ * * It is useful when you have a class with behavior that can
+ * * change at runtime and you want to delegate the implementation
+ * * responsibility to another class.
  *
- * https://refactoring.guru/es/design-patterns/strategy
+ * https://refactoring.guru/design-patterns/strategy
  */
 
 /**
- * !Objetivo: 
- * Implementar el patrón Strategy para calcular los impuestos de diferentes países.
+ * !Objective: 
+ * Implement the Strategy pattern to calculate taxes for different countries.
  * 
- * !Descripción del Ejercicio
+ * !Exercise Description
 
-  Imagina que trabajas en una plataforma de comercio electrónico que opera en varios países. 
-  Cada país tiene su propio método para calcular impuestos, 
-  y necesitas implementar un sistema que sea:
+  Imagine you are working on an e-commerce platform that operates in multiple countries. 
+  Each country has its own method for calculating taxes, 
+  and you need to implement a system that is:
 
-    1. Flexible: Permita agregar nuevos cálculos de impuestos 
-       sin modificar la lógica existente.
-    2. Dinámico: Cambie la estrategia de cálculo de impuestos en tiempo 
-       de ejecución según el país seleccionado.
+    1. Flexible: Allows adding new tax calculations 
+       without modifying the existing logic.
+    2. Dynamic: Changes the tax calculation strategy at runtime 
+       based on the selected country.
  */
 
 /**	
-    1.	Implementar una interfaz TaxStrategy que defina un método 
+    1.	Implement an interface TaxStrategy that defines a method 
         calculateTax(amount: number): number.
         
-    2.	Crear clases específicas de estrategia para los países disponibles:
-      •	USA: Impuesto del 10%.
-      •	Canada: Impuesto del 13%.
-      •	Germany: Impuesto del 19%.
+    2.	Create specific strategy classes for the available countries:
+      •	USA: 10% tax.
+      •	Canada: 13% tax.
+      •	Germany: 19% tax.
       
-    3.	Implementar una clase TaxCalculator que utilice las estrategias 
-        para calcular los impuestos.
+    3.	Implement a TaxCalculator class that uses the strategies 
+        to calculate taxes.
  */
 
         import { COLORS } from '../helpers/colors.ts';
 
-        // Interfaz Strategy
+        // Strategy Interface
         interface TaxStrategy {
           calculateTax(amount: number): number;
         }
         
-        // Estrategia 1: Impuestos en USA
+        // Strategy 1: Taxes in USA
         class USATaxStrategy implements TaxStrategy {
-          // TODO: Implementar el método calculateTax = amount * 0.1
+          //? Implement the calculateTax method = amount * 0.1
+          calculateTax(amount: number): number {
+            return amount * 0.1;
+          }
         }
         
-        // Estrategia 2: Impuestos en Canada
+        // Strategy 2: Taxes in Canada
         class CanadaTaxStrategy implements TaxStrategy {
-          // TODO: Implementar el método calculateTax = amount * 0.13
+          //? Implement the calculateTax method = amount * 0.13
+          calculateTax(amount: number): number {
+            return amount * 0.13;
+          }
         }
         
-        // Estrategia 3: Impuestos en Germany
+        // Strategy 3: Taxes in Germany
         class GermanyTaxStrategy implements TaxStrategy {
-          // TODO: Implementar el método calculateTax = amount * 0.19
+          //? Implement the calculateTax method = amount * 0.19
+          calculateTax(amount: number): number {
+            return amount * 0.19;
+          }
         }
         
-        // Clase Contexto - TaxCalculator
+        // Context Class - TaxCalculator
         class TaxCalculator {
           private strategy: TaxStrategy;
         
-          // TODO: Implementar el constructor recibiendo la estrategia a usar
+          //? Implement the constructor receiving the strategy to use
+          constructor(strategy: TaxStrategy) {
+            this.strategy = strategy;
+          }
         
-          // Cambiar la estrategia de cálculo de impuestos
+          // Change the tax calculation strategy
           setStrategy(strategy: TaxStrategy): void {
             this.strategy = strategy;
           }
         
-          // Calcular impuestos
+          // Calculate taxes
           calculate(amount: number): number {
             return this.strategy.calculateTax(amount);
           }
         }
         
-        // Código Cliente para probar
+        // Client Code to test
         function main(): void {
           const taxCalculator = new TaxCalculator(new USATaxStrategy());
         
-          console.log('%cCálculo de impuestos:\n', COLORS.red);
+          console.log('%cTax Calculation:\n', COLORS.red);
           console.log('USA: $', taxCalculator.calculate(100).toFixed(2));
         
-          console.log('\nCambiando a estrategia para Canada...');
+          console.log('\nSwitching to Canada strategy...');
           taxCalculator.setStrategy(new CanadaTaxStrategy());
           console.log('Canada: $', taxCalculator.calculate(100).toFixed(2));
         
-          console.log('\nCambiando a estrategia para Germany...');
+          console.log('\nSwitching to Germany strategy...');
           taxCalculator.setStrategy(new GermanyTaxStrategy());
           console.log('Germany: $', taxCalculator.calculate(100).toFixed(2));
         }
